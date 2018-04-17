@@ -17,9 +17,9 @@ class data: #Creating a class for all the functions I need to do dealing with da
             if start < 30 and distance != "" and distance != 0 : #Code below will only run in first 30 seconds, and only if I'm getting valid values for distance
             
                 if start == 0: #Code below will run if it's the first iteration
-                    object.status(0) #Calls on function status, and will pass value 0 to it (this will affect what I do in the function)
+                    object.status(False) #Calls on function status, and will pass value 0 to it (this will affect what I do in the function)
                 elif start == 29: # Code will run once we hit 29 seconds
-                    object.status(1) #Calls on function status, and will pass value 0 to it (this will affect what I do in the function)
+                    object.status(True) #Calls on function status, and will pass value 0 to it (this will affect what I do in the function)
                 start+=1 #Keeping track of how many times we've run through this section, will run every time
                 
                 if start<5: #Calculating modifiers for first 5 seconds, although only the last one will be used. This must be done in order to throw away the first few inaccurate values gathered form the arduino.
@@ -83,16 +83,16 @@ class data: #Creating a class for all the functions I need to do dealing with da
     
         firebaseURL = "https://work-5b7b6.firebaseio.com/" #Storing the url of the database I'll be uploading to
         
-        connected = 0 #Creating variable that will keep track of whether or not the user conncted to a port
+        connected = False #Creating variable that will keep track of whether or not the user conncted to a port
         
         for i in range(0, len(connections)): #Code will run for every port avaliable
             if connections[i]["text"]=="Connected.": #Checks if user connected to that specific port
                 ser = serial.Serial(buttons[i]["text"], 9600, timeout=0) #If so, saves that port
-                connected = 1 #Tells us that this user did indeed connect
+                connected = True #Tells us that this user did indeed connect
                 print(connections[i]["text"])
             i=+1 #Increases i so that the next port is checked
         
-        if connected == 0: #If user did not connect
+        if connected == False: #If user did not connect
             ser = serial.Serial('/dev/cu.usbmodem1461', 9600, timeout=0) #We'll set this port as the default (Note that this will only work for Macs, I am unsure what the port is common for windows
         
         sendTime = -1 #This section is just creating variables that are going to be updated in the loop function
@@ -256,7 +256,7 @@ class GUI(Frame): #Creating a class for all the functions I need to do dealing w
         self.labelAvg2.config(text=str(avg2))
 
     def status(self, status): #Function to tell user the status of the test
-        if status == 0: #If we just started the test, we'll tell the user we're calibrating
+        if status == False: #If we just started the test, we'll tell the user we're calibrating
             self.labelStatus.config(text="Calibrating, please wait!")
         else: #Here we are telling the user that the test is actually running and done calibrating
             self.labelStatus.config(text="Test is now running!")

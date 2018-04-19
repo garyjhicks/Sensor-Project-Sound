@@ -14,7 +14,7 @@ class data: #Creating a class for all the functions I need to do dealing with da
             distance = ser.readline().decode().replace('\n', '') #Reading in the first distance sent from the Arduino
             distance2 = ser.readline().decode().replace('\n', '') #Reading in the second distance sent from the Arduino
             
-            if start < 30 and distance != "" and distance != 0 : #Code below will only run in first 30 seconds, and only if I'm getting valid values for distance
+            if start < 30 and distance != "" and distance != 0 and distance2 !=0 and distance !="" and distance2 !="": #Code below will only run in first 30 seconds, and only if I'm getting valid values for distance
             
                 if start == 0: #Code below will run if it's the first iteration
                     object.status(False) #Calls on function status, and will pass value 0 to it (this will affect what I do in the function)

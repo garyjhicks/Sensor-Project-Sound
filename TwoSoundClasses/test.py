@@ -92,7 +92,7 @@ class data: #Creating a class for all the functions I need to do dealing with da
                 print(connections[i]["text"])
             i=+1 #Increases i so that the next port is checked
         
-        if connected == False: #If user did not connect
+        if not connected: #If user did not connect
             ser = serial.Serial('/dev/cu.usbmodem1461', 9600, timeout=0) #We'll set this port as the default (Note that this will only work for Macs, I am unsure what the port is common for windows
         
         sendTime = -1 #This section is just creating variables that are going to be updated in the loop function
@@ -115,7 +115,8 @@ class data: #Creating a class for all the functions I need to do dealing with da
             print("Invalid time recieved, LED will not go off") #If invalid vlaue is entered, sendTime stays atg -1 and never goes off
         
         data.loop(data, self, firebaseURL, ser, sendTime, urlAddition, count, start, modifier, modifier2, avg, avg2) #Starts the loop function
-
+    
+    @staticmethod
     def average(avg, new): #Function to calculate the average
         alpha=0.0645 #Closer to 0 gives less weight to new values, closer to 1 gives more weight to new values (Using 2/(N+1) right now)
         avg = (alpha * float(new)) + (1.0 - alpha) * avg #Calculates the average
@@ -256,7 +257,7 @@ class GUI(Frame): #Creating a class for all the functions I need to do dealing w
         self.labelAvg2.config(text=str(avg2))
 
     def status(self, status): #Function to tell user the status of the test
-        if status == False: #If we just started the test, we'll tell the user we're calibrating
+        if not status: #If we just started the test, we'll tell the user we're calibrating
             self.labelStatus.config(text="Calibrating, please wait!")
         else: #Here we are telling the user that the test is actually running and done calibrating
             self.labelStatus.config(text="Test is now running!")
